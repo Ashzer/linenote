@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".linenote.LinenoteFragment">
+    tools:context=".linenote.LineNoteFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/linenote_recyclerview_memos"
+        android:id="@+id/lineNote_recyclerview_note"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,7 +18,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/linenote_floatingbtn_add"
+        android:id="@+id/lineNote_floatingbtn_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"

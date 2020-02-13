@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import org.androidtown.linenote.features.linenote.LinenoteViewModel
+import org.androidtown.linenote.features.linenote.LineNoteViewModel
+import org.androidtown.linenote.features.notepage.NotePageViewModel
 
 @Module
 abstract class ViewModelModule {
@@ -14,6 +15,11 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(LinenoteViewModel::class)
-    abstract fun bindsLinenoteViewModel(linenoteViewModel : LinenoteViewModel):ViewModel
+    @ViewModelKey(LineNoteViewModel::class)
+    abstract fun bindLinenoteViewModel(lineNoteViewModel: LineNoteViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NotePageViewModel::class)
+    abstract fun bindNotePageViewModel(notePageViewModel: NotePageViewModel): ViewModel
 }
