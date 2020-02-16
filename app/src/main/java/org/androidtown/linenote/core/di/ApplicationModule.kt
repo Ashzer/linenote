@@ -9,7 +9,6 @@ import dagger.Provides
 import org.androidtown.linenote.AndroidApplication
 import org.androidtown.linenote.core.di.database.NoteDatabase
 import org.androidtown.linenote.features.linenote.LineNoteRepository
-import org.androidtown.linenote.features.usecases.NoteDAO
 import javax.inject.Singleton
 
 @Module
@@ -20,15 +19,15 @@ class ApplicationModule(private val application: AndroidApplication) {
 
     @Provides
     @Singleton
-    fun provideNoteDatabase() : NoteDatabase{
-        val db =  Room.databaseBuilder(
+    fun provideNoteDatabase(): NoteDatabase {
+        val db = Room.databaseBuilder(
             application,
             NoteDatabase::class.java,
             "notes"
-        ).addCallback(object : RoomDatabase.Callback(){
+        ).addCallback(object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                Thread{
+                Thread {
                     db.beginTransactionNonExclusive()
                 }
             }
@@ -36,9 +35,28 @@ class ApplicationModule(private val application: AndroidApplication) {
 
         return db
     }
-
+/*
     @Provides
     @Singleton
-    fun provideLineNoteRepository(dataSource: LineNoteRepository.LineNoteDatabase) : LineNoteRepository = dataSource
+    fun provideNoteImageDatabase(): NoteImageDatabase {
+        val db = Room.databaseBuilder(
+            application,
+            NoteImageDatabase::class.java,
+            "images"
+        ).addCallback(object : RoomDatabase.Callback() {
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                Thread {
+                    db.beginTransactionNonExclusive()
+                }
+            }
+        }).build()
+        return db
+    }
+*/
+    @Provides
+    @Singleton
+    fun provideLineNoteRepository(dataSource: LineNoteRepository.LineNoteDatabase): LineNoteRepository =
+        dataSource
 
 }

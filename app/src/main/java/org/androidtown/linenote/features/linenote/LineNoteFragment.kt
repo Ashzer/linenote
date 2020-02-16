@@ -17,7 +17,7 @@ class LineNoteFragment : BaseFragment() {
 
     private lateinit var lineNoteViewModel : LineNoteViewModel
     @Inject lateinit var navigator : Navigator
-    @Inject lateinit var db : NoteDatabase
+    @Inject lateinit var noteDB: NoteDatabase
     @Inject lateinit var lineNoteAdapter: LineNoteAdapter
 
 
