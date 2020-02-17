@@ -6,15 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+
     tools:context=".notepage.NotePageFragment">
 
-    <TextView
+    <Button
+        android:id="@+id/notepage_button_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="20dp"
+        android:text="Save" />
+
+    <EditText
         android:id="@+id/notepage_textview_title"
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:text="title_" />
 
-    <TextView
+    <EditText
         android:id="@+id/notepage_textview_content"
         android:layout_width="match_parent"
         android:layout_height="268dp"
@@ -24,8 +33,10 @@
         android:id="@+id/notepage_recyclerview_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:focusedByDefault="true"
         tools:layoutManager="GridLayoutManager"
         tools:listitem="@layout/notepage_recyclerview_note_item"
-        tools:spanCount="5" />
+        tools:spanCount="5"
+        />
+
 </LinearLayout>

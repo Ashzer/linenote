@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.linenote_recyclerview_note_item.view.*
 import org.androidtown.linenote.R
 import org.androidtown.linenote.core.extension.inflate
@@ -34,8 +35,11 @@ class LineNoteAdapter
         fun bind(lineNoteView: LineNoteView, context: Context, clickListener: (Int)->Unit ){
             itemView.linenote_textview_title.text = lineNoteView.title
             itemView.linenote_textview_content.text = lineNoteView.content
-            itemView.linenote_textview_test.text = lineNoteView.thumbnail
-
+            //itemView.linenote_textview_test.text = lineNoteView.thumbnail
+            Glide.with(context)
+                .load(lineNoteView.thumbnail)
+                .error(android.R.drawable.ic_delete)
+                .into(itemView.linenote_imageview_thumnail)
             itemView.linenote_recyclerview_note_item_body.setOnClickListener{
                 clickListener(lineNoteView.id)
             }

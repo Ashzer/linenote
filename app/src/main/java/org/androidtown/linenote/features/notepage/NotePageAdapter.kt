@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import kotlinx.android.synthetic.main.notepage_fragment.view.*
 import kotlinx.android.synthetic.main.notepage_recyclerview_note_item.view.*
 import org.androidtown.linenote.R
 import org.androidtown.linenote.core.extension.inflate
@@ -36,8 +37,9 @@ class NotePageAdapter
         fun bind(notePageImageView: NotePageImageView, context: Context, clickListener:()-> Unit){
             Glide.with(context)
                 .load(notePageImageView.image)
+                .error(android.R.drawable.ic_delete)
                 .into(itemView.notepage_imageview_image)
-            itemView.notepage_textview_test.text =  notePageImageView.image
+            //itemView.notepage_textview_test.text =  notePageImageView.image
 
 
         }
