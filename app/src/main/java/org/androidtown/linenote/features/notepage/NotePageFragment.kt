@@ -41,7 +41,7 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
     lateinit var navigator: Navigator
     @Inject
     lateinit var notePageAdapter: NotePageAdapter
-
+    private var isInit = true
     private val REQUEST_TAKE_PHOTO = 1
     private val PICK_FROM_ALBUM = 2
 
@@ -90,15 +90,18 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
             notepage_button_delete.invisible()
         if (noteId == -1) {
         } else {
-            notePageViewModel.loadNote(noteId)
-            notepage_textview_title.unfocusble()
-            notepage_textview_content.unfocusble()
-            notepage_textview_title.setBackgroundColor(Color.RED)
-            notepage_textview_content.setBackgroundColor(Color.RED)
-            notepage_linearlayout_buttonbox.invisible()
-            notepage_textview_message.invisible()
-            notepage_button_save.invisible()
-            notepage_button_delete.visible()
+            if(isInit) {
+                notePageViewModel.loadNote(noteId)
+                notepage_textview_title.unfocusble()
+                notepage_textview_content.unfocusble()
+                notepage_textview_title.setBackgroundColor(Color.RED)
+                notepage_textview_content.setBackgroundColor(Color.RED)
+                notepage_linearlayout_buttonbox.invisible()
+                notepage_textview_message.invisible()
+                notepage_button_save.invisible()
+                notepage_button_delete.visible()
+                isInit=false
+            }
         }
 
         notepage_button_edit.setOnClickListener {
