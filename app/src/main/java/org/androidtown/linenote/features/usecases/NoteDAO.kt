@@ -16,7 +16,7 @@ interface NoteDAO {
     fun getFirstImages(): List<NoteImageEntity>
 
     @Insert(onConflict = REPLACE)
-    fun insertNote(noteEntity: NoteEntity) : Long
+    fun insertNote(noteEntity: NoteEntity): Long
 
     @Insert(onConflict = REPLACE)
     fun insertImage(vararg noteImageEntity: NoteImageEntity)
@@ -30,6 +30,11 @@ interface NoteDAO {
     @Query("SELECT * FROM images WHERE noteId = :noteId")
     fun getImagesByNoteId(noteId: Int): List<NoteImageEntity>
 
+    @Query("DELETE FROM notes WHERE id = :noteId")
+    fun deleteNoteByNoteId(noteId: Int)
+
+    @Query("DELETE FROM images WHERE noteid = :noteId")
+    fun deleteImagesByNoteId(noteId: Int)
 
     @Delete
     fun deleteNote(noteEntity: NoteEntity)

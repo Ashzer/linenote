@@ -6,6 +6,8 @@ import org.androidtown.linenote.core.interactor.UseCase.None
 import org.androidtown.linenote.core.platform.BaseViewModel
 import org.androidtown.linenote.features.ImageData
 import org.androidtown.linenote.features.NoteData
+import org.androidtown.linenote.features.usecases.DeleteImagesById
+import org.androidtown.linenote.features.usecases.DeleteNoteById
 import org.androidtown.linenote.features.usecases.GetFirstImages
 import org.androidtown.linenote.features.usecases.GetNotes
 import javax.inject.Inject
@@ -13,7 +15,9 @@ import javax.inject.Inject
 class LineNoteViewModel
 @Inject constructor(
     private val getNotes: GetNotes,
-    private val getFirstImages: GetFirstImages
+    private val getFirstImages: GetFirstImages,
+    private val deleteImagesById: DeleteImagesById,
+    private val deleteNoteById: DeleteNoteById
 ) : BaseViewModel() {
     var noteList: MutableLiveData<List<LineNoteView>> = MutableLiveData()
     var thumbnailList : MutableLiveData<List<LineNoteImageView>> = MutableLiveData()
@@ -21,6 +25,8 @@ class LineNoteViewModel
     fun loadNotes() = getNotes(None()) { it.fold(::handleFailure, ::handleLineNoteDataList) }
 
     fun getThumbnail() = getFirstImages(None()) { it.fold(::handleFailure, ::handleImage) }
+    fun deleteImages(noteId:Int) = deleteImagesById(noteId)
+    fun deleteNote(noteId:Int) = deleteNoteById(noteId)
 
     private fun handleImage(imageData: List<ImageData>){
         this.thumbnailList.value = imageData.map{

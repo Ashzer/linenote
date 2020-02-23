@@ -29,7 +29,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".features.NotePageActivity"></activity>
-        <activity android:name=".features.NoteAdditionActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

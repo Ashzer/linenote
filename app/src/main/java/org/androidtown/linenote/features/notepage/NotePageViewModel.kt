@@ -13,12 +13,14 @@ import javax.inject.Singleton
 
 class NotePageViewModel
 @Inject constructor(
-    val getImages: GetImages,
-    val getNoteById: GetNoteById,
-    val updateNote: UpdateNote,
-    val insertImage: InsertImage,
-    val deleteImage: DeleteImage,
-    val insertNote: InsertNote
+    private val getImages: GetImages,
+    private val getNoteById: GetNoteById,
+    private val updateNote: UpdateNote,
+    private val insertImage: InsertImage,
+    private val deleteImage: DeleteImage,
+    private val insertNote: InsertNote,
+    private val deleteNoteById: DeleteNoteById,
+    private val deleteImagesById: DeleteImagesById
 ) : BaseViewModel() {
     var imageList: MutableLiveData<List<NotePageImageView>> = MutableLiveData()
     var note: MutableLiveData<NotePageView> = MutableLiveData()
@@ -26,16 +28,22 @@ class NotePageViewModel
     var emptyImage = ImageData.empty()
     var isNoImage = true
     var thisNoteId : Int = 0
-    fun newNote(noteData: NoteData) =
+    private fun newNote(noteData: NoteData) =
         insertNote(noteData) { it.fold(::handleFailure, ::handleNewNote) }
     fun loadNote(noteId: Int) = getNoteById(noteId) { it.fold(::handleFailure, ::handleNoteList) }
-    fun loadImages(noteId: Int) =
+    fun deleteNote(noteId:Int) = deleteNoteById(noteId)
+    private fun loadImages(noteId: Int) =
         getImages(noteId) { it.fold(::handleFailure, ::handleNotePageImageList) }
 
     private fun saveNote(noteData: NoteData) = updateNote(noteData)
     private fun saveImage(imageData: ImageData) = insertImage(imageData)
     private fun deleteThisImage(imageData: ImageData) = deleteImage(imageData)
+    private fun deleteImages(noteId:Int) = deleteImagesById(noteId)
 
+    fun deleteNote(){
+        deleteNote(thisNoteId)
+        deleteImages(thisNoteId)
+    }
     fun initializeNote(noteId : Int){
         when(noteId){
             -1 ->{

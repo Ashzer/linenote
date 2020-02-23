@@ -16,5 +16,7 @@ class LineNoteDatabaseService
     fun updateNote(noteEntity: NoteEntity) = noteDB.noteDAO().updateNote(noteEntity)
     fun insertImage(noteImageEntity: NoteImageEntity) = noteDB.noteDAO().insertImage(noteImageEntity)
     fun deleteImage(noteImageEntity: NoteImageEntity) = noteDB.noteDAO().deleteNoteImage(noteImageEntity)
+    fun deleteNoteByNoteId(noteId:Int) = noteDB.noteDAO().deleteNoteByNoteId(noteId)
+    fun deleteImagesByNoteId(noteId: Int) = noteDB.noteDAO().deleteImagesByNoteId(noteId)
 
 }

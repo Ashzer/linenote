@@ -2,39 +2,80 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/notepage"
+    android:id="@+id/notepage_constraint_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
     tools:context=".features.notepage.NotePageFragment">
 
-    <Button
-        android:id="@+id/notepage_button_save"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/notepage_constraint_menus"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:text="Save"
-        app:layout_constraintBottom_toTopOf="@+id/notepage_textview_title"
+        app:layout_constraintBottom_toBottomOf="@id/notepage_textview_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <Button
+            android:id="@+id/notepage_button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:focusable="auto"
+            android:text="Save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/notepage_button_edit"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/notepage_button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="Delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/notepage_button_edit"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/notepage_button_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="Edit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
         android:id="@+id/notepage_textview_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:editable="true"
         android:singleLine="true"
-        android:text="title_"
+        android:text="Title"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/notepage_textview_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notepage_button_save" />
+        app:layout_constraintTop_toBottomOf="@id/notepage_constraint_menus" />
 
     <EditText
         android:id="@+id/notepage_textview_content"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:editable="true"
+        android:gravity="top"
         android:text="Contents"
         app:layout_constraintBottom_toTopOf="@+id/notepage_recyclerview_image"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +87,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:focusedByDefault="true"
-        app:layout_constraintBottom_toBottomOf="@id/notepage_linearlayout_buttonbox"
+        app:layout_constraintBottom_toBottomOf="@id/notepage_textview_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/notepage_textview_content"
@@ -56,15 +97,26 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/notepage_textview_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="에디트 모드에서 사진을 누르면 삭제할 수 있습니다"
+        app:layout_constraintBottom_toTopOf="@id/notepage_linearlayout_buttonbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notepage_recyclerview_image" />
+
     <LinearLayout
         android:id="@+id/notepage_linearlayout_buttonbox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notepage_recyclerview_image">
+        app:layout_constraintTop_toBottomOf="@id/notepage_textview_message">
 
         <Button
             android:id="@+id/notepage_button_camera"

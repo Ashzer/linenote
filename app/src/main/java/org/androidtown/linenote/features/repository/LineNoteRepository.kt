@@ -11,7 +11,6 @@ import javax.inject.Inject
 
 interface LineNoteRepository {
     fun notes(): Either<Failure, List<NoteData>>
-    //fun getFirstImageByNoteId(noteId :Int) : Either<Failure, String>
     fun getImages(noteId:Int) : Either<Failure,List<ImageData>>
     fun getNoteById(id:Int):Either<Failure, NoteData>
     fun getFirstImages() : Either<Failure,List<ImageData>>
@@ -19,7 +18,11 @@ interface LineNoteRepository {
     fun updateNote(noteData: NoteData) : Either<Failure,Unit>
     fun insertNote(noteData: NoteData) : Either<Failure, Long>
     fun insertImage(imageData: ImageData) : Either<Failure, Unit>
+
     fun deleteImage(imageData: ImageData) : Either<Failure, Unit>
+    fun deleteImagesByNoteId(noteId: Int) : Either<Failure, Unit>
+    fun deleteNoteByNoteId(noteId:Int) : Either<Failure,Unit>
+
 
     class LineNoteDatabase
     @Inject constructor(private val service : LineNoteDatabaseService):
@@ -84,6 +87,22 @@ interface LineNoteRepository {
         override fun insertNote(noteData: NoteData): Either<Failure, Long> {
             return try{
                 Right(service.insertNote(noteData.toNoteEntity()))
+            }catch (exception : Throwable){
+                Left(Failure.DatabaseError)
+            }
+        }
+
+        override fun deleteImagesByNoteId(noteId: Int): Either<Failure, Unit> {
+            return try{
+                Right(service.deleteImagesByNoteId(noteId))
+            }catch (exception : Throwable){
+                Left(Failure.DatabaseError)
+            }
+        }
+
+        override fun deleteNoteByNoteId(noteId: Int): Either<Failure, Unit> {
+            return try{
+                Right(service.deleteNoteByNoteId(noteId))
             }catch (exception : Throwable){
                 Left(Failure.DatabaseError)
             }

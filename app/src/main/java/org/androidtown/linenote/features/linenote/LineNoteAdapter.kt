@@ -27,7 +27,7 @@ class LineNoteAdapter
     }
 
     internal var clickListener: (Int) -> Unit = { _ -> }
-
+    internal var longClickListener :(Int) -> Boolean = {true}
     override fun getItemCount() = noteCollection.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -35,7 +35,8 @@ class LineNoteAdapter
             noteCollection[position],
             imageCollection.getOrElse(position) { LineNoteImageView.empty() },
             context,
-            clickListener
+            clickListener,
+            longClickListener
         )
     }
 
@@ -47,19 +48,34 @@ class LineNoteAdapter
             lineNoteView: LineNoteView,
             lineNoteImageView: LineNoteImageView,
             context: Context,
-            clickListener: (Int) -> Unit
+            clickListener: (Int) -> Unit,
+            longClickListener: (Int) -> Boolean
         ) {
+            if(lineNoteView.title.length>10)
+                itemView.linenote_textview_title.text = lineNoteView.title.subSequence(0,10).toString()+"..."
+            else
+                itemView.linenote_textview_title.text = lineNoteView.title
 
-            itemView.linenote_textview_title.text = lineNoteView.title
-            itemView.linenote_textview_content.text = lineNoteView.content
+            if(lineNoteView.content.length>30)
+                itemView.linenote_textview_content.text = lineNoteView.content.subSequence(0,30).toString()+"..."
+            else
+                itemView.linenote_textview_content.text = lineNoteView.content
             Glide.with(context)
                 .load(lineNoteImageView.image)
                 .error(android.R.drawable.ic_delete)
                 .into(itemView.linenote_imageview_thumnail)
 
+            itemView.linenote_recyclerview_note_item_body.setOnLongClickListener {
+                Log.d("clickevent","long click")
+                longClickListener(lineNoteView.id)
+            }
             itemView.linenote_recyclerview_note_item_body.setOnClickListener {
+                Log.d("clickevent","short click")
                 clickListener(lineNoteView.id)
             }
+
+
+
         }
     }
 }

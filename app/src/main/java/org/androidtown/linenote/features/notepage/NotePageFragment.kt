@@ -4,19 +4,22 @@ import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.notepage_dialog.view.*
 import kotlinx.android.synthetic.main.notepage_fragment.*
+import kotlinx.android.synthetic.main.notepage_recyclerview_note_item.*
 import org.androidtown.linenote.R
-import org.androidtown.linenote.core.extension.observe
-import org.androidtown.linenote.core.extension.viewModel
+import org.androidtown.linenote.core.extension.*
 import org.androidtown.linenote.core.navigation.Navigator
 import org.androidtown.linenote.core.platform.BaseFragment
 import org.androidtown.linenote.features.ImageData
@@ -49,17 +52,17 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
         }
 
         var noteId: Int = intent.getIntExtra("id", 1)
-
         notePageViewModel.initializeNote(noteId)
-        /*
-        if (noteId == -1) {
-            notePageViewModel.newNote(NoteData(0, "", ""))
-        } else {
-            notePageViewModel.loadImages(noteId)
-            notePageViewModel.loadNote(noteId)
-        }
 
-         */
+
+
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        when(intent.getIntExtra("id", 1)) {
+            -1 -> notePageViewModel.deleteNote(notePageViewModel.thisNoteId)
+        }
     }
 
     override fun onResume() {
@@ -81,12 +84,47 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
         notepage_recyclerview_image.adapter = notePageAdapter
 
         var noteId: Int = intent.getIntExtra("id", -1)
+            notepage_button_delete.invisible()
         if (noteId == -1) {
         } else {
             notePageViewModel.loadNote(noteId)
+            notepage_textview_title.unfocusble()
+            notepage_textview_content.unfocusble()
+            notepage_textview_title.setBackgroundColor(Color.RED)
+            notepage_textview_content.setBackgroundColor(Color.RED)
+            notepage_linearlayout_buttonbox.invisible()
+            notepage_textview_message.invisible()
+            notepage_button_save.invisible()
+            notepage_button_delete.visible()
         }
-        notepage_button_save.setOnClickListener {
 
+        notepage_button_edit.setOnClickListener {
+            when(notepage_linearlayout_buttonbox.visibility){
+                View.VISIBLE -> {
+                    notepage_linearlayout_buttonbox.invisible()
+                    notepage_textview_message.invisible()
+                    notepage_button_save.invisible()
+                    notepage_button_delete.visible()
+                    notepage_textview_title.unfocusble()
+                    notepage_textview_content.unfocusble()
+                    notepage_textview_title.setBackgroundColor(Color.RED)
+                    notepage_textview_content.setBackgroundColor(Color.RED)
+                }
+                View.GONE -> {
+                    notepage_linearlayout_buttonbox.visible()
+                    notepage_textview_message.visible()
+                    notepage_button_save.visible()
+                    notepage_button_delete.invisible()
+                    notepage_textview_title.focusble()
+                    notepage_textview_content.focusble()
+                    notepage_textview_title.setBackgroundColor(Color.WHITE)
+                    notepage_textview_content.setBackgroundColor(Color.WHITE)
+                }
+            }
+
+        }
+
+        notepage_button_save.setOnClickListener {
             var title = notepage_textview_title.text.toString()
             var content = notepage_textview_content.text.toString()
             notePageViewModel.saveNotePage(
@@ -96,35 +134,41 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
                     content
                 )
             )
-            Toast.makeText(activity, "Note saved.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "노트가 저장되었습니다.", Toast.LENGTH_SHORT).show()
             navigator.showMain(activity!!)
         }
 
-        notePageAdapter.longClickListener = { notePageImageView ->
+        notepage_button_delete.setOnClickListener {
+            notePageViewModel.deleteNote()
+            Toast.makeText(activity, "노트가 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+            navigator.showMain(activity!!)
+        }
 
-            val dialogClickListener = DialogInterface.OnClickListener { _, which ->
-                when (which) {
-                    DialogInterface.BUTTON_POSITIVE -> {
-                        notePageViewModel.removeImage(
-                            ImageData(
-                                notePageImageView.id,
-                                notePageImageView.noteId,
-                                notePageImageView.image
+        notePageAdapter.clickListener = { notePageImageView ->
+            if(notepage_textview_title.isFocusable) {
+                    val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            notePageViewModel.removeImage(
+                                ImageData(
+                                    notePageImageView.id,
+                                    notePageImageView.noteId,
+                                    notePageImageView.image
+                                )
                             )
-                        )
-                    }
-                    DialogInterface.BUTTON_NEGATIVE -> {
+                        }
+                        DialogInterface.BUTTON_NEGATIVE -> {
+                        }
                     }
                 }
+                AlertDialog.Builder(activity)
+                    .setTitle("사진 삭제")
+                    .setMessage("해당 사진을 삭제 하시겠습니까?")
+                    .setPositiveButton("네", dialogClickListener)
+                    .setNegativeButton("아니오", dialogClickListener)
+                    .create()
+                    .show()
             }
-            AlertDialog.Builder(activity)
-                .setTitle("사진 삭제")
-                .setMessage("해당 사진을 삭제 하시겠습니까?")
-                .setPositiveButton("네", dialogClickListener)
-                .setNegativeButton("아니오", dialogClickListener)
-                .create()
-                .show()
-            true
         }
 
         notepage_button_url.setOnClickListener {
@@ -212,7 +256,6 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
                             uri.toString()
                         )
                     )
-                    Log.d("photoflow","$uri")
                 }
             }
         }
