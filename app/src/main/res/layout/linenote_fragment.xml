@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".linenote.LineNoteFragment">
+    tools:context=".features.linenote.LineNoteFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lineNote_recyclerview_note"

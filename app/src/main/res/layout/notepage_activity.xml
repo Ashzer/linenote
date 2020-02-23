@@ -4,4 +4,4 @@
     android:id="@+id/notePage_flo_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NotePageActivity" />
+    tools:context=".features.NotePageActivity" />

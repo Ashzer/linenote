@@ -1,42 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/notepage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
 
-    tools:context=".notepage.NotePageFragment">
+    tools:context=".features.notepage.NotePageFragment">
 
     <Button
         android:id="@+id/notepage_button_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
         android:layout_marginEnd="20dp"
-        android:text="Save" />
+        android:text="Save"
+        app:layout_constraintBottom_toTopOf="@+id/notepage_textview_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/notepage_textview_title"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:text="title_" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="title_"
+        app:layout_constraintBottom_toTopOf="@+id/notepage_textview_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notepage_button_save" />
 
     <EditText
         android:id="@+id/notepage_textview_content"
-        android:layout_width="match_parent"
-        android:layout_height="268dp"
-        android:text="Contents" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Contents"
+        app:layout_constraintBottom_toTopOf="@+id/notepage_recyclerview_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notepage_textview_title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notepage_recyclerview_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:focusedByDefault="true"
+        app:layout_constraintBottom_toBottomOf="@id/notepage_linearlayout_buttonbox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notepage_textview_content"
         tools:layoutManager="GridLayoutManager"
         tools:listitem="@layout/notepage_recyclerview_note_item"
-        tools:spanCount="5"
-        />
+        tools:spanCount="5">
 
-</LinearLayout>
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/notepage_linearlayout_buttonbox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notepage_recyclerview_image">
+
+        <Button
+            android:id="@+id/notepage_button_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="camera" />
+
+        <Button
+            android:id="@+id/notepage_button_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="URL" />
+
+        <Button
+            android:id="@+id/notepage_button_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Gallery" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

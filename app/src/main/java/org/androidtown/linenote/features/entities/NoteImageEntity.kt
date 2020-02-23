@@ -3,8 +3,7 @@ package org.androidtown.linenote.features.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.androidtown.linenote.core.extension.empty
-import org.androidtown.linenote.features.notepage.NotePageImageData
-import org.androidtown.linenote.features.notepage.NotePageImageView
+import org.androidtown.linenote.features.ImageData
 
 @Entity(tableName = "images")
 data class NoteImageEntity(
@@ -16,5 +15,6 @@ data class NoteImageEntity(
         fun empty() = NoteImageEntity(-1, -1, String.empty())
     }
 
-    fun toImages() = NotePageImageData(id,noteID,image)
+    fun toImages() =
+        ImageData(id, noteID, image)
 }

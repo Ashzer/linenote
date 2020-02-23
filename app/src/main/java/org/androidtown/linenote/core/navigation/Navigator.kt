@@ -10,6 +10,6 @@ import javax.inject.Singleton
 class Navigator
 @Inject constructor() {
     fun showMain(context: Context) = context.startActivity(LineNoteActivity.callingIntent(context))
-    fun showNote(context: Context, id: Int) =
-        context.startActivity(NotePageActivity.callingIntent(context, id))
+    fun showNote(context: Context, id: Int) = context.startActivity(NotePageActivity.callingIntent(context, id))
+
 }

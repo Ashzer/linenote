@@ -5,7 +5,7 @@ import org.androidtown.linenote.features.repository.LineNoteRepository
 import org.androidtown.linenote.features.ImageData
 import javax.inject.Inject
 
-class GetImages
-@Inject constructor(private val noteRepository: LineNoteRepository) : UseCase<List<ImageData>,Int>(){
-    override suspend fun run(paramas: Int) = noteRepository.getImages(paramas)
+class InsertImage
+@Inject constructor(private val noteRepository: LineNoteRepository) : UseCase<Unit, ImageData>(){
+    override suspend fun run(paramas: ImageData) = noteRepository.insertImage(paramas)
 }

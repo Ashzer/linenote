@@ -22,25 +22,30 @@ class NotePageAdapter
         _,_,_ -> notifyDataSetChanged()
     }
 
-    internal var clickListener : ()->Unit = { }
+    internal var longClickListener : (NotePageImageView)->Boolean = {true}
 
     override fun getItemCount() = collection.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(collection[position],context,clickListener)
+        holder.bind(collection[position],context,longClickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
             = ViewHolder(parent.inflate(R.layout.notepage_recyclerview_note_item))
 
     class ViewHolder(itemView : View):RecyclerView.ViewHolder(itemView){
-        fun bind(notePageImageView: NotePageImageView, context: Context, clickListener:()-> Unit){
+        fun bind(notePageImageView: NotePageImageView, context: Context, longClickListener:(NotePageImageView) -> Boolean){
+
+
             Glide.with(context)
                 .load(notePageImageView.image)
                 .error(android.R.drawable.ic_delete)
                 .into(itemView.notepage_imageview_image)
             //itemView.notepage_textview_test.text =  notePageImageView.image
 
+            itemView.notepage_recyclerview_note_item_body.setOnLongClickListener {
+                longClickListener(notePageImageView)
+            }
 
         }
     }

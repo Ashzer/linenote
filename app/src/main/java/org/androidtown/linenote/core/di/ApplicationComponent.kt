@@ -20,4 +20,5 @@ interface ApplicationComponent {
 
     fun inject(notePageActivity: NotePageActivity)
     fun inject(notePageFragment: NotePageFragment)
+
 }

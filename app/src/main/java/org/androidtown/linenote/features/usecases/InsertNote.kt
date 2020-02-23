@@ -5,7 +5,7 @@ import org.androidtown.linenote.features.NoteData
 import org.androidtown.linenote.features.repository.LineNoteRepository
 import javax.inject.Inject
 
-class GetNoteById
-@Inject constructor(private val noteRepository: LineNoteRepository) : UseCase<NoteData,Int>(){
-    override suspend fun run(paramas: Int) = noteRepository.getNoteById(paramas)
+class InsertNote
+@Inject  constructor(private val noteRepository: LineNoteRepository) : UseCase<Long, NoteData>(){
+    override suspend fun run(paramas: NoteData) = noteRepository.insertNote(paramas)
 }

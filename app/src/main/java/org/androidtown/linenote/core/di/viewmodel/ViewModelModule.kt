@@ -16,10 +16,17 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(LineNoteViewModel::class)
-    abstract fun bindLinenoteViewModel(lineNoteViewModel: LineNoteViewModel): ViewModel
+    abstract fun bindLineNoteViewModel(lineNoteViewModel: LineNoteViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(NotePageViewModel::class)
+    abstract fun bindNotePageViewModel(notePageViewModel: NotePageViewModel):ViewModel
+/*
+    @Binds
+    @IntoMap
+    @ViewModelKey(NotePageViewModel::class)
     abstract fun bindNotePageViewModel(notePageViewModel: NotePageViewModel): ViewModel
+*/
+
 }

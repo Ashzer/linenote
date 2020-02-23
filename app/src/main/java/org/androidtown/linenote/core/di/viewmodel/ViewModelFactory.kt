@@ -13,14 +13,14 @@ import javax.inject.Singleton
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory
 @Inject constructor(private val creators: Map<Class<out ViewModel>,
-        @JvmSuppressWildcards Provider<ViewModel>>) : ViewModelProvider.Factory {
+        @JvmSuppressWildcards Provider<ViewModel>>) : ViewModelProvider.Factory{
 
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         val creator = creators[modelClass] ?:
-        creators.asIterable().firstOrNull { modelClass.isAssignableFrom(it.key) }?.value ?:
-        throw IllegalArgumentException("Unknown ViewModel class " + modelClass)
+        creators.asIterable().firstOrNull{modelClass.isAssignableFrom(it.key)} ?.value ?:
+        throw IllegalArgumentException("Unknown ViewModel class" + modelClass)
 
-        return try { creator.get() as T }
-        catch (e: Exception) { throw RuntimeException(e) }
+        return try{creator.get() as T}
+        catch (e: Exception) {throw RuntimeException((e))}
     }
 }

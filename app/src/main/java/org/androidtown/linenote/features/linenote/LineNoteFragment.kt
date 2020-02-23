@@ -1,6 +1,7 @@
 package org.androidtown.linenote.features.linenote
 
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.linenote_fragment.*
 import org.androidtown.linenote.R
@@ -27,6 +28,7 @@ class LineNoteFragment : BaseFragment() {
 
         lineNoteViewModel = viewModel(viewModelFactory){
             observe(noteList,::renderNoteList)
+            observe(thumbnailList,::renderThumbnailList)
             //failure(failure, ::handleFailure)
         }
     }
@@ -37,7 +39,11 @@ class LineNoteFragment : BaseFragment() {
     }
 
     private fun renderNoteList(lineNoteViews: List<LineNoteView>?){
-        lineNoteAdapter.collection = lineNoteViews.orEmpty()
+        lineNoteAdapter.noteCollection = lineNoteViews.orEmpty()
+    }
+
+    private fun renderThumbnailList(lineNoteImageViews: List<LineNoteImageView>?){
+            lineNoteAdapter.imageCollection = lineNoteImageViews.orEmpty()
     }
 
     private fun initializeView(){
@@ -48,7 +54,12 @@ class LineNoteFragment : BaseFragment() {
             navigator.showNote(activity!!,id)
         }
 
+        lineNote_floatingbtn_add.setOnClickListener {
+            navigator.showNote(activity!!,-1)
+        }
+
         lineNoteViewModel.loadNotes()
+        lineNoteViewModel.getThumbnail()
     }
 
 }
