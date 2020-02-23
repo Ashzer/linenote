@@ -1,9 +1,11 @@
 package org.androidtown.linenote.features.notepage
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -13,6 +15,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.notepage_dialog.view.*
@@ -201,35 +204,40 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
         }
 
         notepage_button_camera.setOnClickListener {
-
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                // Ensure that there's a camera activity to handle the intent
-                takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
-                    // Create the File where the photo should go
-                    val photoFile: File? = try {
-                        createImageFile()
-                    } catch (ex: IOException) {
-                        null
-                    }
-                    // Continue only if the File was successfully created
-                    photoFile?.also {
-                        val photoURI: Uri = FileProvider.getUriForFile(
-                            activity!!,
-                            "org.androidtown.linenote.features.NotePageActivity",
-                            it
-                        )
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
-                        Log.d("picture file path", photoURI.toString())
-
-                        notePageViewModel.addImage(
-                            ImageData(
-                                0,
-                                -1,
-                                photoURI.toString()
+            if(ContextCompat.checkSelfPermission(activity!!,
+                    Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(activity,"카메라 권한이 없습니다.",Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                    // Ensure that there's a camera activity to handle the intent
+                    takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
+                        // Create the File where the photo should go
+                        val photoFile: File? = try {
+                            createImageFile()
+                        } catch (ex: IOException) {
+                            null
+                        }
+                        // Continue only if the File was successfully created
+                        photoFile?.also {
+                            val photoURI: Uri = FileProvider.getUriForFile(
+                                activity!!,
+                                "org.androidtown.linenote.features.NotePageActivity",
+                                it
                             )
-                        )
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
+                            Log.d("picture file path", photoURI.toString())
 
+                            notePageViewModel.addImage(
+                                ImageData(
+                                    0,
+                                    -1,
+                                    photoURI.toString()
+                                )
+                            )
+
+                        }
                     }
                 }
             }

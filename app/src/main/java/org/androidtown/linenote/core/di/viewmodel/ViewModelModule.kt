@@ -22,11 +22,5 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(NotePageViewModel::class)
     abstract fun bindNotePageViewModel(notePageViewModel: NotePageViewModel):ViewModel
-/*
-    @Binds
-    @IntoMap
-    @ViewModelKey(NotePageViewModel::class)
-    abstract fun bindNotePageViewModel(notePageViewModel: NotePageViewModel): ViewModel
-*/
 
 }

@@ -2,7 +2,6 @@ package org.androidtown.linenote.features
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import org.androidtown.linenote.R
 import org.androidtown.linenote.core.navigation.Navigator
 import org.androidtown.linenote.core.platform.BaseActivity
@@ -20,12 +19,6 @@ class NotePageActivity : BaseActivity() {
         }
     }
 
-/*
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        appComponent.inject(this)
-    }
-*/
     override var layout = R.layout.notepage_activity
     override var fragmentId = R.id.notePage_flo_container
     override fun fragment() =
