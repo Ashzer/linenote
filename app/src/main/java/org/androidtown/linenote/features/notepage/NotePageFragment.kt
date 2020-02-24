@@ -58,12 +58,11 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
         notePageViewModel.initializeNote(noteId)
 
 
-
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        when(intent.getIntExtra("id", 1)) {
+        when (intent.getIntExtra("id", 1)) {
             -1 -> notePageViewModel.deleteNote(notePageViewModel.thisNoteId)
         }
     }
@@ -87,10 +86,12 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
         notepage_recyclerview_image.adapter = notePageAdapter
 
         var noteId: Int = intent.getIntExtra("id", -1)
-            notepage_button_delete.invisible()
+        notepage_button_delete.invisible()
+
         if (noteId == -1) {
+            notepage_button_edit.invisible()
         } else {
-            if(isInit) {
+            if (isInit) {
                 notePageViewModel.loadNote(noteId)
                 notepage_textview_title.unfocusble()
                 notepage_textview_content.unfocusble()
@@ -100,12 +101,12 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
                 notepage_textview_message.invisible()
                 notepage_button_save.invisible()
                 notepage_button_delete.visible()
-                isInit=false
+                isInit = false
             }
         }
 
         notepage_button_edit.setOnClickListener {
-            when(notepage_linearlayout_buttonbox.visibility){
+            when (notepage_linearlayout_buttonbox.visibility) {
                 View.VISIBLE -> {
                     notepage_linearlayout_buttonbox.invisible()
                     notepage_textview_message.invisible()
@@ -151,8 +152,8 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
         }
 
         notePageAdapter.clickListener = { notePageImageView ->
-            if(notepage_textview_title.isFocusable) {
-                    val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+            if (notepage_textview_title.isFocusable) {
+                val dialogClickListener = DialogInterface.OnClickListener { _, which ->
                     when (which) {
                         DialogInterface.BUTTON_POSITIVE -> {
                             notePageViewModel.removeImage(
@@ -207,21 +208,21 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
         }
 
         notepage_button_camera.setOnClickListener {
-            if(ContextCompat.checkSelfPermission(activity!!,
-                    Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(activity,"카메라 권한이 없습니다.",Toast.LENGTH_SHORT).show()
-            }
-            else {
+            if (ContextCompat.checkSelfPermission(
+                    activity!!,
+                    Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                Toast.makeText(activity, "카메라 권한이 없습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                //google reference 코드
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                    // Ensure that there's a camera activity to handle the intent
                     takePictureIntent.resolveActivity(activity!!.packageManager)?.also {
-                        // Create the File where the photo should go
                         val photoFile: File? = try {
                             createImageFile()
                         } catch (ex: IOException) {
                             null
                         }
-                        // Continue only if the File was successfully created
                         photoFile?.also {
                             val photoURI: Uri = FileProvider.getUriForFile(
                                 activity!!,
@@ -230,7 +231,6 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
                             )
                             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                             startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO)
-                            Log.d("picture file path", photoURI.toString())
 
                             notePageViewModel.addImage(
                                 ImageData(
@@ -239,7 +239,7 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
                                     photoURI.toString()
                                 )
                             )
-
+                            Log.d("photoresult", photoURI.toString())
                         }
                     }
                 }
@@ -251,7 +251,6 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
                 startActivityForResult(getGalleryPictureIntent, PICK_FROM_ALBUM)
             }
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -268,12 +267,22 @@ class NotePageFragment(private val intent: Intent) : BaseFragment() {
                         )
                     )
                 }
+                REQUEST_TAKE_PHOTO->{
+                    Log.d("camera","사진 찍음")
+                }
+            }
+        }else{
+            when(requestCode) {
+                REQUEST_TAKE_PHOTO-> {
+                    notePageViewModel.removeLastImage()
+                    Log.d("camera", "사진 안찍음")
+                }
             }
         }
     }
 
     private lateinit var currentPhotoPath: String
-
+    //google reference 코드
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name

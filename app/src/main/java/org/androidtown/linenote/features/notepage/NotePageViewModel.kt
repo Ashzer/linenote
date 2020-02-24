@@ -127,6 +127,13 @@ class NotePageViewModel
         temp.clear()
     }
 
+    fun removeLastImage(){
+        val temp = this.imageList.value!!.toMutableList()
+        temp.removeAt(temp.lastIndex)
+        this.imageList.postValue(temp.toList())
+        temp.clear()
+    }
+
     private fun handleNoteList(noteData: NoteData) {
         note.value = noteData.let {
             NotePageView(
